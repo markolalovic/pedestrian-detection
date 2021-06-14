@@ -1,0 +1,86 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[affil-it]{authblk}
+\usepackage{blindtext}
+\usepackage{abstract}
+
+\usepackage{iccv}
+\iccvfinalcopy
+\def\iccvPaperID{}
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+\usepackage{tcolorbox}
+\usepackage{pdfpages}
+\newcommand*{\quedb}{\hfill\ensuremath{\square}}%
+\usepackage{anyfontsize}
+%\usepackage{linguex}
+\usepackage{mathtools}
+\usepackage[hang]{footmisc}
+
+\definecolor{pink}{HTML}{EC008C}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks = true,
+            linkcolor = pink,
+            urlcolor  = pink,
+            citecolor = pink,
+            anchorcolor = pink]{hyperref}
+            
+\usepackage{amssymb}
+
+% additional packages
+\usepackage{amsmath}
+\usepackage{bbm}
+\usepackage{support-caption}
+\usepackage{subcaption}
+\usepackage{tikz, tikz-3dplot} 
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usepackage{url}
+\renewcommand{\footnotesize}{\fontsize{7.5pt}{7.5pt}\selectfont}
+\setlength{\footnotemargin}{0mm}
+
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage{booktabs}
+
+%% local defs
+% macros
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+% confusion matrix
+\usepackage{array}
+\usepackage{multirow}
+
+\newcommand\MyBox[2]{
+  \fbox{\lower0.75cm
+    \vbox to 1.7cm{\vfil
+      \hbox to 1.7cm{\hfil\parbox{1.4cm}{#1\\#2}\hfil}
+      \vfil}%
+  }%
+}
+
+\usepackage{tikzpagenodes}
+
+\title{Machine Learning Project Report: \\
+Pedestrian Detection for Autonomous Driving Applications}
+\author{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+{TODO: write a summary, emphasize the contributions}
+\end{abstract}
+
+\input{introduction}
+\input{approach}
+
+\bibliographystyle{ieeetr}
+\bibliography{main}
+
+\end{document}
+
