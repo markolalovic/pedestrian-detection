@@ -4,7 +4,7 @@ import torch
 
 def results_as_json(model, indices, dataset, device, num_im, threshold = 0.3):
     infos = []
-    for i in range(0, num_im):
+    for i in range(0, num_im): #i don't know where to find the number of images so I just added a variable
         idx = indices.index(i)
         img, anno = dataset[idx]
         model.eval()
