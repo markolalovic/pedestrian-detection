@@ -28,7 +28,10 @@ def data_as_json(anno_path):
 
     for i in range(anno_train[0].shape[0]):
         # extract data from the annotations matrix
-        city_name = anno_train[0, i][0][0][0][0] # currently uses all data not only hamburg
+        city_name = anno_train[0, i][0][0][0][0]
+        if not city_name == 'hamburg': # currently only uses hamburg 
+            continue
+
         img_name = anno_train[0, i][0][0][1][0]
 
         one_im = {"id": i+1, #find out if we have image id
@@ -45,16 +48,14 @@ def data_as_json(anno_path):
         for bb in anno_train[0, i][0][0][2]:
             ## format is: [class_label, x1,y1,w,h, instance_id, x1_vis, y1_vis, w_vis, h_vis]
             if bb[0] == 1:  # class_label = 1 means it is a pedestrian
-                one_ann = {"id": bb[5],
+                one_ann = {"id": int(bb[5]),
                            "image_id": i+1,  #same as above
                            "category_id": 1,
-                           "segmentation":[bb[1:3]],
-                           "area": bb[3] * bb[4],
-                           "bbox": bb[1:5],
+                           "segmentation":[list(bb[1:3])],
+                           "area": int(bb[3] * bb[4]),
+                           "bbox": list(bb[1:5]),
                            "iscrowd":0} #should probably be 0 for all instances
                 ann.append(one_ann)
-
-
 
 
     data = {"info": inf, "licenses": lic, "images": im, "annotations": ann, "categories": cat}
