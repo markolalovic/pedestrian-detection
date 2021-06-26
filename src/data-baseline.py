@@ -17,11 +17,11 @@ import os
 from shutil import copyfile
 import random
 
-imgs_path = '../data/cityscapes/leftImg8bit_trainvaltest/leftImg8bit/train/'
-anno_path = '../data/citypersons/'
+imgs_path = '../datasets/cityscapes-dataset/leftImg8bit/train/'
+anno_path = '../datasets/CityPersons/annotations/'
 
-imgs1_path = '../data/single-person/'
-imgs0_path = '../data/no-person/'
+imgs1_path = '../datasets/baseline-dataset/person'
+imgs0_path = '../datasets/baseline-dataset/noperson'
 
 def get_annotations(anno_path):
     ''' Prepares data - only train data for now, by
