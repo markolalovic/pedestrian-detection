@@ -51,9 +51,9 @@ def data_as_json(anno_path):
                 one_ann = {"id": int(bb[5]),
                            "image_id": i+1,  #same as above
                            "category_id": 1,
-                           "segmentation":[list(bb[1:3])],
+                           "segmentation":[[int(bb[1]), int(bb[2])]],
                            "area": int(bb[3] * bb[4]),
-                           "bbox": list(bb[1:5]),
+                           "bbox": [int(bb[1]), int(bb[2]), int(bb[3]), int(bb[4])],
                            "iscrowd":0} #should probably be 0 for all instances
                 ann.append(one_ann)
 
