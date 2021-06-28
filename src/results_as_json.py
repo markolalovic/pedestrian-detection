@@ -24,8 +24,8 @@ def results_as_json(model, indices, dataset, device, num_im, threshold = 0.3):
 
             info = {"image_id": idx, #this idx should be the same as the one in the data
                     "category_id": 1,
-                    "bbox": bb,
-                    "score": sc}
+                    "bbox": [int(bb[0]), int(bb[1]), int(bb[2]), int(bb[3])],
+                    "score": float(sc)}
             infos.append(info)
 
     f = open("results.json","w")
