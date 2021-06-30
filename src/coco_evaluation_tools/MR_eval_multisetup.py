@@ -99,7 +99,7 @@ class COCOeval:
         for gt in gts:
             gt['ignore'] = gt['ignore'] if 'ignore' in gt else 0
             gt['ignore'] = 1 if (gt['height'] < self.params.HtRng[id_setup][0] or gt['height'] > self.params.HtRng[id_setup][1]) or \
-               ( gt['vis_ratio'] < self.params.VisRng[id_setup][0] or gt['vis_ratio'] > self.params.VisRng[id_setup][1]) else gt['ignore']
+               ( gt['vis_ratio']/100 < self.params.VisRng[id_setup][0] or gt['vis_ratio']/100 > self.params.VisRng[id_setup][1]) else gt['ignore']
 
         self._gts = defaultdict(list)       # gt for evaluation
         self._dts = defaultdict(list)       # dt for evaluation
