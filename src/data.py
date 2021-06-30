@@ -68,6 +68,40 @@ class HamburgDataset(torch.utils.data.Dataset):
 
 
 ## some helper functions
+
+#returns annotation for one .txt file in (x,y,width,height)
+def get_annotation_caltech(anno_path):
+    myfile = open(anno_path, "rt") # open lorem.txt for reading text
+    contents = myfile.read()
+    #print(contents)
+    bboxesTemp = contents.splitlines()
+    #print(bboxesTemp)
+    bboxes = []
+    print(bboxesTemp)
+    for x in range(len(bboxesTemp)):
+        bbox = [0,0,0,0]
+        Placeholder = bboxesTemp[x]
+        Placeholder = Placeholder.split()
+        bbox[0] = int(640*float(Placeholder[1])-640*float(Placeholder[3])*0.5)
+        bbox[1] = int(480*float(Placeholder[2])-480*float(Placeholder[4])*0.5)
+        bbox[2] = int(640*float(Placeholder[3]))
+        bbox[3] = int(480*float(Placeholder[4]))
+        bboxes.append(bbox)
+        
+
+    return bboxes
+    
+#returns a dictionary with the Images as Keys and annotations in (x,y,width,height)
+def get_annotations_caltech():
+    dict = {}
+    files = [f for f in listdir("./datasets/caltech/CaltechImages00") if isfile(join("./datasets/caltech/CaltechImages00", f))]
+    files.remove(".DS_Store")
+    for f in files:
+
+        dict[f] = get_annotation_caltech("./datasets/caltech/CaltechAnnots/train" + f[3:(len(f)-4)] +".txt")
+    return dict
+
+
 def get_annotations(anno_path):
     ''' Prepares data - only train data for now, by
     transforming annotations from .mat format to a dictionary.
