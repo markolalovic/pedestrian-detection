@@ -1,0 +1,76 @@
+\documentclass[10pt, xcolor={dvipsnames}]{beamer}
+\usetheme{Boadilla}
+
+\setbeamerfont{title}{series=\bfseries}
+\setbeamerfont{author}{series=\normalfont}
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{footline}{series=\bfseries}
+\setbeamertemplate{caption}[numbered]
+\usepackage{caption}
+
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+\setbeamercolor{bibliography item}{fg=black}
+\setbeamercolor{bibliography entry author}{fg=black}
+\setbeamercolor{bibliography entry title}{fg=black}
+\setbeamercolor{bibliography entry location}{fg=black}
+\setbeamercolor{bibliography entry note}{fg=black}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{graphicx}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\setbeamerfont{title}{size=\large}
+\setbeamerfont{author}{size=\normalsize}
+\setbeamerfont{date}{size=\footnotesize}
+
+\title[Pedestrian Detection]{Machine Learning Project Report:
+Pedestrian Detection for Autonomous Driving Applications}
+\author[\textcolor{white}{Marko Lalovic, TODO}]{\textcolor{black}{Marko Lalovic, TODO}}
+\date[\textcolor{white}{June 30, 2021}]{\textcolor{black}{June 30, 2021}}
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+  \usebeamerfont{title}\inserttitle\par
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+  \bigskip
+  \usebeamerfont{author}\insertauthor\par
+  \usebeamerfont{institute}\insertinstitute\par
+  \usebeamerfont{date}\insertdate\par
+  \usebeamercolor[fg]{titlegraphic}\inserttitlegraphic
+  \bigskip
+}
+
+\begin{document}
+\begin{frame}
+\begin{center}
+\maketitle
+\begin{figure}
+    \includegraphics[width=\linewidth]{../figures/project.png}
+\end{figure}
+\end{center}
+\end{frame}
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\section{Background}
+\begin{frame}
+\frametitle{Background}
+TODO
+\begin{center}
+\begin{figure}
+    \includegraphics[width=.8\linewidth]{../figures/small-bbox-example.png}
+    \caption{Caption}
+\end{figure}
+\end{center}
+\end{frame}
+
+\end{document} 
