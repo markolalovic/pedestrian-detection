@@ -23,6 +23,10 @@ def data_as_json(anno_path):
     im = []
     ann = []
 
+    names_to_int = {"aachen": 1, "bochum": 2, "bremen": 3, "cologne": 4, "darmstadt": 5, "dusseldorf": 6, "erfurt": 7,
+                    "hamburg": 8, "hanover": 9, "jena": 10, "krefeld": 11, "monchengladbach": 12, "strasbourg": 13,
+                    "stuttgart": 14, "tubingen": 15, "ulm": 16, "weimar": 17, "zurich": 18}
+
     anno_train = scipy.io.loadmat(anno_path + 'anno_train.mat')
     anno_train = anno_train['anno_train_aligned']
 
@@ -33,10 +37,15 @@ def data_as_json(anno_path):
             continue
 
         img_name = anno_train[0, i][0][0][1][0]
+        p3 = img_name[-22:-16]
+        p2 = img_name[-29:-23]
+        p1 = img_name[:-30]
+        p1 = names_to_int[p1]
+        p = str(p1) + p2 + p3
 
-        one_im = {"id": i+1, #find out if we have image id
-           "width": 640, #do we have the same height/width and if not where is this information
-           "height": 640,
+        one_im = {"id": int(p), #find out if we have image id
+           "width": 2000, #do we have the same height/width and if not where is this information
+           "height": 1000,
            "file_name": str(img_name),
            "license": 1,
            "flickr_url": "test",
@@ -49,10 +58,12 @@ def data_as_json(anno_path):
             ## format is: [class_label, x1,y1,w,h, instance_id, x1_vis, y1_vis, w_vis, h_vis]
             if bb[0] == 1:  # class_label = 1 means it is a pedestrian
                 one_ann = {"id": int(bb[5]),
-                           "image_id": i+1,  #same as above
+                           "image_id": int(p),  #same as above
                            "category_id": 1,
                            "segmentation":[[int(bb[1]), int(bb[2])]],
                            "area": int(bb[3] * bb[4]),
+                           "height": int(bb[4]),
+                           "vis_ratio": int(100*(bb[8]*bb[9])/(bb[3]*bb[4])),
                            "bbox": [int(bb[1]), int(bb[2]), int(bb[3]), int(bb[4])],
                            "iscrowd":0} #should probably be 0 for all instances
                 ann.append(one_ann)
