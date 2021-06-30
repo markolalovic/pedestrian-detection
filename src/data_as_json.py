@@ -39,8 +39,7 @@ def data_as_json(anno_path):
         img_name = anno_train[0, i][0][0][1][0]
         p3 = img_name[-22:-16]
         p2 = img_name[-29:-23]
-        p1 = img_name[:-30]
-        p1 = names_to_int[p1]
+        p1=names_to_int[im[:-30]]
         p = str(p1) + p2 + p3
 
         one_im = {"id": int(p), #find out if we have image id
