@@ -80,7 +80,7 @@ def get_annotation_caltech(anno_path):
     print(bboxesTemp)
     for x in range(len(bboxesTemp)):
         bbox = [0,0,0,0]
- git       Placeholder = bboxesTemp[x]
+        Placeholder = bboxesTemp[x]
         Placeholder = Placeholder.split()
         bbox[0] = int(640*float(Placeholder[1])-640*float(Placeholder[3])*0.5)
         bbox[1] = int(480*float(Placeholder[2])-480*float(Placeholder[4])*0.5)
