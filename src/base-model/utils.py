@@ -13,6 +13,27 @@ normalize = transforms.Normalize(
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
+def get_simple_regions(scale=0):
+    ''' TODO: create regions with more anchor boxes, to get larger training set
+     and tighter detections. See: ../notebooks/AnchorBoxes.ipynb notebook. '''
+
+    stride = 187
+    regions = []
+    for i in range(10):
+        region = [5 + i*stride, 100 + (i % 2) * 20, 350, 800]
+        regions.append(region)
+
+    if scale > 0:
+        ## resize regions
+        res_regions = []
+        for region in regions:
+            res_region = np.array(region) / scale
+            res_region = res_region.astype('int32')
+            res_regions.append(res_region.tolist())
+        regions = res_regions
+
+    return regions
+
 def get_backbone():
     ''' Backbone CNN '''
     # model_path = '/home/marko/data/models/vgg16.pt'
@@ -51,13 +72,6 @@ def get_IoU(bbox1, bbox2):
 
         combined = area_a + area_b - overlap
         return overlap / (combined + 1e-5)
-
-def get_simple_regions(stride=187):
-    regions = []
-    for i in range(10):
-        region = [5 + i*stride, 100 + (i % 2) * 20, 350, 800]
-        regions.append(region)
-    return regions
 
 def get_data(imgs_person, anno_dict, regions, W, H):
     ''' Returns:
