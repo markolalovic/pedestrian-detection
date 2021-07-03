@@ -75,16 +75,9 @@ def get_transform(train):
 def save_model(model, path="./models/entire_model.pt"):
     torch.save(model, path)
     print('Model saved to ' + path)
-    
+
 def load_model(path="./models/entire_model.pt"):
     if torch.cuda.is_available():
         return torch.load(path)
     else:
         return torch.load(path, map_location=torch.device('cpu'))
-
-
-
-
-
-
-#@

@@ -72,8 +72,9 @@ class BaseModel(nn.Module):
     def __init__(self, backbone):
         super().__init__()
         feature_dim = 25088
-        self.backbone = backbone
-        self.cls_score = nn.Linear(feature_dim, 2) # TODO: 2 classes
+        self.backbone = backbone # using vgg16 backbone
+        ## attach a linear layer
+        self.cls_score = nn.Linear(feature_dim, 2) # 2 classes
         self.bbox = nn.Sequential(
             nn.Linear(feature_dim, 512),
             nn.ReLU(),
@@ -90,6 +91,10 @@ class BaseModel(nn.Module):
         return score, bbox
 
     def calc_loss(self, probs, _diffs, labels, diffs):
+        ''' Defines the losses to predict:
+            * class
+            * for the 4 bounding box differences
+        '''
         d_loss = self.cel(probs, labels)
         indices, = torch.where(labels == 1)
         _diffs = diffs[indices]
@@ -98,13 +103,13 @@ class BaseModel(nn.Module):
 
         if len(indices) > 0:
             r_loss = self.sl1(_diffs, diffs)
-
             return d_loss + self.lmb * r_loss, d_loss.detach(), r_loss.detach()
         else:
             r_loss = 0
             return d_loss + self.lmb * r_loss, d_loss.detach(), r_loss
 
 def train_batch(inputs, model, optimizer, criterion):
+    ''' Trains the model to predict classes of regions and 4 differences. '''
     input, classes, diffs = inputs
     model.train()
     optimizer.zero_grad()
