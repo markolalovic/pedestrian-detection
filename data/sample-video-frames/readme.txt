@@ -1,0 +1,1 @@
+This is a sample of 18 frames extracted from the first few seconds of the video available at https://motchallenge.net/vis/KITTI-17 from MOTChallenge dataset, published under CC BY-NC-SA 3.0 (https://creativecommons.org/licenses/by-nc-sa/3.0/).
