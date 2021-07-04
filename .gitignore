@@ -1,3 +1,7 @@
+## Byte-compiled / optimized / DLL files
+__pycache__/
+
+## Jupyter notebook checkpoints
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
