@@ -102,13 +102,15 @@ def get_annotations_caltech():
     return dict
 
 
-def get_annotations(anno_path):
-    ''' Prepares data - only train data for now, by
-    transforming annotations from .mat format to a dictionary.
-    '''
-
-    anno_train = scipy.io.loadmat(anno_path + 'anno_train.mat')
-    anno_train = anno_train['anno_train_aligned']
+def get_annotations(anno_path, anno_val=False):
+    ''' Returns annotations as a dictionary from .mat format. '''
+    
+    if anno_val:
+        anno_train = scipy.io.loadmat(anno_path + 'anno_val.mat')
+        anno_train = anno_train['anno_val_aligned']        
+    else:
+        anno_train = scipy.io.loadmat(anno_path + 'anno_train.mat')
+        anno_train = anno_train['anno_train_aligned']
 
     d = {}
     for i in range(anno_train[0].shape[0]):
@@ -118,13 +120,13 @@ def get_annotations(anno_path):
 
         bboxes = []
         for bb in anno_train[0, i][0][0][2]:
-            ## format is: [class_label, x1,y1,w,h, instance_id, x1_vis, y1_vis, w_vis, h_vis]
-            if bb[0] == 1: # class_label = 1 means it is a pedestrian
-                bboxes.append(bb[1:5]) # bbox = [x, y, w, h]
-
-        if city_name == 'hamburg':
+            if bb[0] > 0: # class_label = 1 means it is a person
+                bboxes.append(bb[1:5]) # bbox format = [x, y, w, h]
+        
+        ## keep only images with persons
+        if bboxes != []:
             d[img_name] = bboxes
-
+    
     return d
 
 def show(img_path, img_name, anno_dict):
