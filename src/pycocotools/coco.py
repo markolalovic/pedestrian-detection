@@ -52,15 +52,20 @@ from matplotlib.patches import Polygon
 import numpy as np
 import copy
 import itertools
-# from . import mask as maskUtils
+import mask as maskUtils
 import os
 from collections import defaultdict
 import sys
 PYTHON_VERSION = sys.version_info[0]
 if PYTHON_VERSION == 2:
-    from urllib import urlretrieve
+    from urllib.request import urlretrieve
 elif PYTHON_VERSION == 3:
     from urllib.request import urlretrieve
+
+
+def _isArrayLike(obj):
+    return hasattr(obj, '__iter__') and hasattr(obj, '__len__')
+
 
 class COCO:
     def __init__(self, annotation_file=None):
@@ -78,7 +83,7 @@ class COCO:
             tic = time.time()
             dataset = json.load(open(annotation_file, 'r'))
             assert type(dataset)==dict, 'annotation file format {} not supported'.format(type(dataset))
-            print('Done (t={:0.2f}s)'.format(time.time()- tic))
+            print(('Done (t={:0.2f}s)'.format(time.time()- tic)))
             self.dataset = dataset
             self.createIndex()
 
@@ -118,8 +123,8 @@ class COCO:
         Print information about the annotation file.
         :return:
         """
-        for key, value in self.dataset['info'].items():
-            print('{}: {}'.format(key, value))
+        for key, value in list(self.dataset['info'].items()):
+            print(('{}: {}'.format(key, value)))
 
     def getAnnIds(self, imgIds=[], catIds=[], areaRng=[], iscrowd=None):
         """
@@ -130,8 +135,8 @@ class COCO:
                iscrowd (boolean)       : get anns for given crowd label (False or True)
         :return: ids (int array)       : integer array of ann ids
         """
-        imgIds = imgIds if type(imgIds) == list else [imgIds]
-        catIds = catIds if type(catIds) == list else [catIds]
+        imgIds = imgIds if _isArrayLike(imgIds) else [imgIds]
+        catIds = catIds if _isArrayLike(catIds) else [catIds]
 
         if len(imgIds) == len(catIds) == len(areaRng) == 0:
             anns = self.dataset['annotations']
@@ -157,9 +162,9 @@ class COCO:
         :param catIds (int array)  : get cats for given cat ids
         :return: ids (int array)   : integer array of cat ids
         """
-        catNms = catNms if type(catNms) == list else [catNms]
-        supNms = supNms if type(supNms) == list else [supNms]
-        catIds = catIds if type(catIds) == list else [catIds]
+        catNms = catNms if _isArrayLike(catNms) else [catNms]
+        supNms = supNms if _isArrayLike(supNms) else [supNms]
+        catIds = catIds if _isArrayLike(catIds) else [catIds]
 
         if len(catNms) == len(supNms) == len(catIds) == 0:
             cats = self.dataset['categories']
@@ -178,11 +183,11 @@ class COCO:
         :param catIds (int array) : get imgs with all given cats
         :return: ids (int array)  : integer array of img ids
         '''
-        imgIds = imgIds if type(imgIds) == list else [imgIds]
-        catIds = catIds if type(catIds) == list else [catIds]
+        imgIds = imgIds if _isArrayLike(imgIds) else [imgIds]
+        catIds = catIds if _isArrayLike(catIds) else [catIds]
 
         if len(imgIds) == len(catIds) == 0:
-            ids = self.imgs.keys()
+            ids = list(self.imgs.keys())
         else:
             ids = set(imgIds)
             for i, catId in enumerate(catIds):
@@ -198,7 +203,7 @@ class COCO:
         :param ids (int array)       : integer ids specifying anns
         :return: anns (object array) : loaded ann objects
         """
-        if type(ids) == list:
+        if _isArrayLike(ids):
             return [self.anns[id] for id in ids]
         elif type(ids) == int:
             return [self.anns[ids]]
@@ -209,7 +214,7 @@ class COCO:
         :param ids (int array)       : integer ids specifying cats
         :return: cats (object array) : loaded cat objects
         """
-        if type(ids) == list:
+        if _isArrayLike(ids):
             return [self.cats[id] for id in ids]
         elif type(ids) == int:
             return [self.cats[ids]]
@@ -220,12 +225,12 @@ class COCO:
         :param ids (int array)       : integer ids specifying img
         :return: imgs (object array) : loaded img objects
         """
-        if type(ids) == list:
+        if _isArrayLike(ids):
             return [self.imgs[id] for id in ids]
         elif type(ids) == int:
             return [self.imgs[ids]]
 
-    def showAnns(self, anns):
+    def showAnns(self, anns, draw_bbox=False):
         """
         Display the specified annotations.
         :param anns (array of object): annotations to display
@@ -281,13 +286,21 @@ class COCO:
                             plt.plot(x[sk],y[sk], linewidth=3, color=c)
                     plt.plot(x[v>0], y[v>0],'o',markersize=8, markerfacecolor=c, markeredgecolor='k',markeredgewidth=2)
                     plt.plot(x[v>1], y[v>1],'o',markersize=8, markerfacecolor=c, markeredgecolor=c, markeredgewidth=2)
+
+                if draw_bbox:
+                    [bbox_x, bbox_y, bbox_w, bbox_h] = ann['bbox']
+                    poly = [[bbox_x, bbox_y], [bbox_x, bbox_y+bbox_h], [bbox_x+bbox_w, bbox_y+bbox_h], [bbox_x+bbox_w, bbox_y]]
+                    np_poly = np.array(poly).reshape((4,2))
+                    polygons.append(Polygon(np_poly))
+                    color.append(c)
+
             p = PatchCollection(polygons, facecolor=color, linewidths=0, alpha=0.4)
             ax.add_collection(p)
             p = PatchCollection(polygons, facecolor='none', edgecolors=color, linewidths=2)
             ax.add_collection(p)
         elif datasetType == 'captions':
             for ann in anns:
-                print(ann['caption'])
+                print((ann['caption']))
 
     def loadRes(self, resFile):
         """
@@ -300,7 +313,7 @@ class COCO:
 
         print('Loading and preparing results...')
         tic = time.time()
-        if type(resFile) == str or type(resFile) == unicode:
+        if type(resFile) == str or (PYTHON_VERSION == 2 and type(resFile) == str):
             anns = json.load(open(resFile))
         elif type(resFile) == np.ndarray:
             anns = self.loadNumpyAnnotations(resFile)
@@ -323,7 +336,6 @@ class COCO:
                 if not 'segmentation' in ann:
                     ann['segmentation'] = [[x1, y1, x1, y2, x2, y2, x2, y1]]
                 ann['area'] = bb[2]*bb[3]
-                ann['height'] = bb[3]
                 ann['id'] = id+1
                 ann['iscrowd'] = 0
         elif 'segmentation' in anns[0]:
@@ -345,7 +357,7 @@ class COCO:
                 ann['area'] = (x1-x0)*(y1-y0)
                 ann['id'] = id + 1
                 ann['bbox'] = [x0,y0,x1-x0,y1-y0]
-        print('DONE (t={:0.2f}s)'.format(time.time()- tic))
+        print(('DONE (t={:0.2f}s)'.format(time.time()- tic)))
 
         res.dataset['annotations'] = anns
         res.createIndex()
@@ -362,7 +374,7 @@ class COCO:
             print('Please specify target directory')
             return -1
         if len(imgIds) == 0:
-            imgs = self.imgs.values()
+            imgs = list(self.imgs.values())
         else:
             imgs = self.loadImgs(imgIds)
         N = len(imgs)
@@ -373,7 +385,7 @@ class COCO:
             fname = os.path.join(tarDir, img['file_name'])
             if not os.path.exists(fname):
                 urlretrieve(img['coco_url'], fname)
-            print('downloaded {}/{} images (t={:0.1f}s)'.format(i, N, time.time()- tic))
+            print(('downloaded {}/{} images (t={:0.1f}s)'.format(i, N, time.time()- tic)))
 
     def loadNumpyAnnotations(self, data):
         """
@@ -383,13 +395,13 @@ class COCO:
         """
         print('Converting ndarray to lists...')
         assert(type(data) == np.ndarray)
-        print(data.shape)
+        print((data.shape))
         assert(data.shape[1] == 7)
         N = data.shape[0]
         ann = []
         for i in range(N):
             if i % 1000000 == 0:
-                print('{}/{}'.format(i,N))
+                print(('{}/{}'.format(i,N)))
             ann += [{
                 'image_id'  : int(data[i, 0]),
                 'bbox'  : [ data[i, 1], data[i, 2], data[i, 3], data[i, 4] ],
