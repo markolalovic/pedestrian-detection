@@ -7,21 +7,32 @@ import torch
 import torch.nn as nn
 import torchvision.models as models
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 
 normalize = transforms.Normalize(
     mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-def get_simple_regions(scale=0):
-    ''' TODO: create regions with more anchor boxes, to get larger training set
-     and tighter detections. See: ../notebooks/AnchorBoxes.ipynb notebook. '''
-
-    stride = 187
-    regions = []
-    for i in range(10):
-        region = [5 + i*stride, 100 + (i % 2) * 20, 350, 800]
-        regions.append(region)
+def get_regions(simple=False, W=512, H=256, scale=0):
+    ''' Proposes regions for training and running base rcnn model. '''
+    if simple:
+        stride = 187
+        regions = []
+        for i in range(10):
+            region = [5 + i*stride, 100 + (i % 2) * 20, 350, 800]
+            regions.append(region)
+    else:
+        regions = []
+        for K in [10, 20, 30]:
+            width = int(W/K)
+            for y in [width, 2*width, 3*width]:
+                for j in range(K):
+                    region = [int(j*width), y, width, int(3*width)]
+                    regions.append(region)
+                for j in range(K-1):
+                    region = [int(j*width + width/2), y, width+20, int(3*width)]
+                    regions.append(region)
 
     if scale > 0:
         ## resize regions
@@ -155,3 +166,34 @@ def load_model(path="./models/entire_model.pt"):
         return torch.load(path)
     else:
         return torch.load(path, map_location=torch.device('cpu'))
+
+def show_probs(probs, title=''):
+    ''' Draws lollipop plot of p.m.f. of simple regions. '''
+    rks = np.arange(1, 11) # or xks - regions representatives
+    markerline, stemlines, baseline = plt.stem(rks, probs, markerfmt='ro')
+
+    plt.setp(stemlines, 'color', plt.getp(markerline,'color'))
+    plt.setp(stemlines, 'linestyle', 'dotted')
+    plt.xticks(rks, [str(rk) for rk in rks])
+    plt.title(title)
+    plt.show()
+
+def smooth_probs(probs):
+    ''' Returns a 3 point running average for smoothing
+    a p.m.f. of simple regions. '''
+    smoothed = []
+    probs = probs.tolist()
+    padded = [probs[0]] + probs + [probs[-1]]
+    for k in range(len(probs)):
+        avg = np.mean([padded[k-1], padded[k], padded[k+1]])
+        smoothed.append(avg)
+    return np.array(smoothed)
+
+def update_probs(probs, prior=[]):
+    ''' Very simple Bayesian update of probs. '''
+    if len(prior) == 0: # for a start to update the first frame
+        prior = np.ones((len(probs),))
+        prior /= sum(prior)
+    posterior = probs * prior
+    posterior = posterior / sum(posterior)
+    return posterior

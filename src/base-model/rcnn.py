@@ -114,11 +114,10 @@ def train_batch(inputs, model, optimizer, criterion):
     model.train()
     optimizer.zero_grad()
     _classes, _diffs = model(input)
-    loss, loc_loss, regr_loss = criterion(_classes, _diffs, classes, diffs)
-    accs = classes == decode(_classes)
+    loss, _, _ = criterion(_classes, _diffs, classes, diffs)
     loss.backward()
     optimizer.step()
-    return loss.detach(), loc_loss, regr_loss, accs.cpu().numpy()
+    return loss.detach()
 
 @torch.no_grad()
 def validate_batch(inputs, model, criterion):
@@ -126,7 +125,5 @@ def validate_batch(inputs, model, criterion):
     with torch.no_grad():
         model.eval()
         _classes, _diffs = model(input)
-        loss, loc_loss, regr_loss = criterion(_classes, _diffs, classes, diffs)
-        _, _classes = _classes.max(-1)
-        accs = classes == _classes
-    return _classes, _diffs, loss.detach(), loc_loss, regr_loss, accs.cpu().numpy()
+        loss, _, _ = criterion(_classes, _diffs, classes, diffs)
+    return loss.detach()
