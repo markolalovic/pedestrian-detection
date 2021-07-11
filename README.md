@@ -12,7 +12,7 @@ The main model is a modified PyTorch implementation of Faster R-CNN with ResNet5
 
 ## How-to
 
-You can download the fitted model from here: <ins>[final-model.pt](https://drive.google.com/file/d/1pFoKi4c4pAJAGaXbjZ9jKAwMP6zl-4sq/view?usp=sharing)</ins>
+You can download the fitted model from here: <ins>[final-model.pt](https://drive.google.com/uc?export=download&confirm=MDR4&id=1pFoKi4c4pAJAGaXbjZ9jKAwMP6zl-4sq)</ins>
 
 The code was written in Python and tested on Ubuntu 20.04.1 LTS using Python 3.8.10 and PyTorch library version 1.8.0. To install all the dependencies run:
 
@@ -104,7 +104,7 @@ Below are the results for AP and AR measures:
 | Average Recall     (AR) | 0.50:0.95 | medium | 100 | 0.506 |
 | Average Recall     (AR) | 0.50:0.95 | large  | 100 | 0.663 |
 
-And using log-average miss rate (MR) measures, for comparison using CityPersons Benchmark Table (https://github.com/cvgroup-njust/CityPersons):
+And using log-average miss rate (MR) measures, for comparison using [CityPersons Benchmark Table](https://github.com/cvgroup-njust/CityPersons):
 
 |         Method         | External   training data | MR (Reasonable) | MR (Reasonable_small) | MR (Reasonable_occ=heavy) | MR (All) |
 |:----------------------:|:----------------------:|:---------------:|:---------------------:|:-------------------------:|:--------:|
