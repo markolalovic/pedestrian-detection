@@ -13,7 +13,12 @@ from torchvision.models.detection.rpn import AnchorGenerator
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.rpn import AnchorGenerator, RPNHead, RegionProposalNetwork
 import torchvision.transforms as transforms
-import transforms as T
+## imports for how-to:
+## import transforms as T
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -163,4 +168,30 @@ def show_losses(all_mean_losses):
         plt.plot(x, y, label=lab)
 
     plt.legend(loc='best')
+    plt.show()
+
+def show(img, bboxes_x0x1y0y1, scores, threshold=0.7):
+    ''' For the How-To. '''
+
+    plt.rcParams['figure.figsize'] = [12, 8]
+
+    fig, ax = plt.subplots()
+    ax.imshow(img);
+
+    bboxes = []
+    for i, bbox in enumerate(bboxes_x0x1y0y1):
+        if scores[i] > threshold:
+            bbox = list(bbox)
+            x0, y0 = bbox[0], bbox[1]
+            x1, y1 = bbox[2], bbox[3]
+            bboxes.append([x0, y0, x1 - x0, y1 - y0])
+
+    for bbox in bboxes:
+        rect = patches.Rectangle(
+            (bbox[0], bbox[1]), bbox[2], bbox[3],
+            linewidth=1, edgecolor='r', facecolor='none')
+
+        ax.add_patch(rect)
+
+    plt.title('Example from Hamburg')
     plt.show()

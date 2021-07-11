@@ -12,6 +12,7 @@ import torch.utils.data
 from torchvision import transforms
 transform = transforms.Compose([transforms.ToTensor(),])
 import time
+from PIL import Image
 
 model = torch.load(
     f = '/home/marko/data/models/final-model-fit.pt',

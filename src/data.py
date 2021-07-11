@@ -87,10 +87,10 @@ def get_annotation_caltech(anno_path):
         bbox[2] = int(640*float(Placeholder[3]))
         bbox[3] = int(480*float(Placeholder[4]))
         bboxes.append(bbox)
-        
+
 
     return bboxes
-    
+
 #returns a dictionary with the Images as Keys and annotations in (x,y,width,height)
 def get_annotations_caltech():
     dict = {}
@@ -104,10 +104,10 @@ def get_annotations_caltech():
 
 def get_annotations(anno_path, anno_val=False):
     ''' Returns annotations as a dictionary from .mat format. '''
-    
+
     if anno_val:
         anno_train = scipy.io.loadmat(anno_path + 'anno_val.mat')
-        anno_train = anno_train['anno_val_aligned']        
+        anno_train = anno_train['anno_val_aligned']
     else:
         anno_train = scipy.io.loadmat(anno_path + 'anno_train.mat')
         anno_train = anno_train['anno_train_aligned']
@@ -122,11 +122,11 @@ def get_annotations(anno_path, anno_val=False):
         for bb in anno_train[0, i][0][0][2]:
             if bb[0] > 0: # class_label = 1 means it is a person
                 bboxes.append(bb[1:5]) # bbox format = [x, y, w, h]
-        
+
         ## keep only images with persons
         if bboxes != []:
             d[img_name] = bboxes
-    
+
     return d
 
 def show(img_path, img_name, anno_dict):
