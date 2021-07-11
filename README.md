@@ -91,18 +91,18 @@ Below are the results for AP and AR measures:
 
 |         Measure         |    IoU Range  | Area       |   MaxDets          |   Value      |
 |-------------------------|---------------|-------------|-------------|---------|
-| Average Precision  (AP) | 0.50:0.95 |   all | maxDets=100 | 0.461 |
-| Average Precision  (AP) | 0.50      |   all | maxDets=100 | 0.754 |
-| Average Precision  (AP) | 0.75      |   all | maxDets=100 | 0.492 |
-| Average Precision  (AP) | 0.50:0.95 |  small | maxDets=100 | 0.087 |
-| Average Precision  (AP) | 0.50:0.95 | medium | maxDets=100 | 0.392 |
-| Average Precision  (AP) | 0.50:0.95 |  large | maxDets=100 | 0.616 |
-| Average Recall     (AR) | 0.50:0.95 |   all | maxDets=  1 | 0.095 |
-| Average Recall     (AR) | 0.50:0.95 |   all | maxDets= 10 | 0.417 |
-| Average Recall     (AR) | 0.50:0.95 |   all | maxDets=100 | 0.550 |
-| Average Recall     (AR) | 0.50:0.95 |  small | maxDets=100 | 0.340 |
-| Average Recall     (AR) | 0.50:0.95 | medium | maxDets=100 | 0.506 |
-| Average Recall     (AR) | 0.50:0.95 | large  | maxDets=100 | 0.663 |
+| Average Precision  (AP) | 0.50:0.95 |   all | 100 | 0.461 |
+| Average Precision  (AP) | 0.50      |   all | 100 | 0.754 |
+| Average Precision  (AP) | 0.75      |   all | 100 | 0.492 |
+| Average Precision  (AP) | 0.50:0.95 |  small | 100 | 0.087 |
+| Average Precision  (AP) | 0.50:0.95 | medium | 100 | 0.392 |
+| Average Precision  (AP) | 0.50:0.95 |  large | 100 | 0.616 |
+| Average Recall     (AR) | 0.50:0.95 |   all | 1 | 0.095 |
+| Average Recall     (AR) | 0.50:0.95 |   all | 10 | 0.417 |
+| Average Recall     (AR) | 0.50:0.95 |   all | 100 | 0.550 |
+| Average Recall     (AR) | 0.50:0.95 |  small | 100 | 0.340 |
+| Average Recall     (AR) | 0.50:0.95 | medium | 100 | 0.506 |
+| Average Recall     (AR) | 0.50:0.95 | large  | 100 | 0.663 |
 
 And using log-average miss rate (MR) measures, for comparison using CityPersons Benchmark Table (https://github.com/cvgroup-njust/CityPersons):
 
