@@ -2,6 +2,8 @@
 
 This repository contains the source code of a research project to develop a machine learning model that detects pedestrians in images with a focus on autonomous driving applications.
 
+Check the [testing video](https://youtu.be/M0r1JTfh9fE) of to see the model detections.
+
 ## Overview
 
 The main model is a modified PyTorch implementation of Faster R-CNN with ResNet50 Backbone pre-trained on COCO dataset. The architecture was modified for pedestrian detection and fine-tuned on annotations from CityPersons dataset and images from CityScapes dataset. See the technical overview in Figure below.
@@ -9,8 +11,6 @@ The main model is a modified PyTorch implementation of Faster R-CNN with ResNet5
 <p align="center">
 <img src="figures/overview-compressed.png" alt="Technical overview" width="1500">
 </p>
-
-See also the [testing video](https://youtu.be/M0r1JTfh9fE) of model detections.
 
 ## How-to
 
