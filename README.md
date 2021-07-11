@@ -81,7 +81,7 @@ fasterutils.show(img, bboxes, scores)
 
 To get the image below:
 <p align="center">
-<img src="figures/hamburg-det.png" alt="Technical overview" width="1500">
+<img src="figures/hamburg-det.png" alt="Hamburg example" width="1500">
 </p>
 
 
@@ -127,10 +127,20 @@ And using log-average miss rate (MR) measures, for comparison using [CityPersons
 | **This Model** | **×** | **25.33%** | **50.96%** | **63.56%** | **41.96%** |
 
 
+## Extension
 
+In the figure below is are 3 consecutive frames from the [testing video](https://youtu.be/M0r1JTfh9fE) where I run the model on all frames of [Pedestrian Challenge video](https://motchallenge.net/vis/MOT17-13).
 
+Say we are detecting pedestrians at time t represented by the first image in the figure below. At time t, because of occlusions, brightness variations or for some other reasons, the model can fail to detect a pedestrian. But perhaps the model detected the same person in one or more of the previous frames. The idea is to use this information which has accumulated over time (at frames t-1, t-2, ...) in order to achieve better detection at time t.
 
+My proposed solution is a bit similar to moving-average idea. For a chosen number of time steps, for simplicity say 2 we do the following. We first solve the classic matching problem of computer vision and match region proposals at time t to the region proposals at previous 2 time frames. This way, we know which detecting bounding boxes should represent the same person trough time. Second, we take a mean of corresponding scores (estimated likelihoods that the region contains a person). And if this mean is greater that some threshold, we show the bounding box at time t.
 
+I tried different variations of this idea with different number of time steps with interesting results. In the figure below, we can see the car approaching a pedestrian on the left. Here I colored the proposed regions with red for current frame, with green the previous frame and blue the previos frame at time t-1 for each time t. For example, we see that at time t-1 only the region proposed at time t-1 was detected as pedestrian. By thresholding the mean of all scores, we can detect the pedestrians we otherwise wouldn't. And vice versa, if there was, say a bicycle in one region proposal that received a high score, but it didn't receive a high score for previous 2 times, the mean would be smaller that threshould and we wouldn't falsely detect it as a pedestrian at time t.
 
+For details, see the scripts: `bus-video-pred.py`, `bus-video-dets.py` and `bus-video-dets-ma3.py` in `../scripts/`.
+
+<p align="center">
+<img src="figures/extension.png" alt="Hamburg example" width="2500">
+</p>
 
 
