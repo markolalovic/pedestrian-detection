@@ -10,6 +10,8 @@ The main model is a modified PyTorch implementation of Faster R-CNN with ResNet5
 <img src="figures/overview-compressed.png" alt="Technical overview" width="1500">
 </p>
 
+See also the [testing video](https://youtu.be/M0r1JTfh9fE) of model detections.
+
 ## How-to
 
 You can download the fitted model from here: <ins>[final-model.pt](https://drive.google.com/uc?export=download&confirm=MDR4&id=1pFoKi4c4pAJAGaXbjZ9jKAwMP6zl-4sq)</ins>
