@@ -54,7 +54,7 @@ model = torch.load(
     map_location = torch.device('cpu'));
 ```
 
-As an example, let's pick an image from hamburg (in `../figures/` directory):
+As an example, let's pick an image from Hamburg (in `../figures/` directory):
 ```python
 img = Image.open('../figures/hamburg.png')
 
