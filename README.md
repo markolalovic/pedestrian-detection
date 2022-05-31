@@ -2,7 +2,7 @@
 
 This repository contains the source code of a research project to develop a machine learning model that detects pedestrians in images with a focus on autonomous driving applications.
 
-Check the [testing video](https://youtu.be/M0r1JTfh9fE) to see the model detections.
+Check the [testing video](https://youtu.be/M0r1JTfh9fE) to see the models detections.
 
 ## Overview
 
